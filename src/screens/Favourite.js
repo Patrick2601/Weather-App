@@ -7,13 +7,24 @@ import {
   Platform,
   ScrollView,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import FavouriteList from '../components/FavouriteList';
 import {useState} from 'react';
+// Are you sure want to remove all the favourites?
 const Favourite = ({navigation}) => {
   const [state, setState] = useState(false);
+  const change = () =>
+    Alert.alert('Are you sure ', 'want to remove all the favourites?', [
+      {
+        text: 'NO',
+        onPress: () => console.log('Cancel Pressed'),
+      },
+      {text: 'YES', onPress: () => setState(!state)},
+    ]);
+
   return (
     <View style={styles.main}>
       <ImageBackground
@@ -27,7 +38,9 @@ const Favourite = ({navigation}) => {
                 justifyContent: 'space-between',
                 width: '40%',
               }}>
-              <TouchableOpacity style={styles.backButton} onPress={()=>navigation.navigate('Home')}>
+              <TouchableOpacity
+                style={styles.backButton}
+                onPress={() => navigation.navigate('Home')}>
                 <Image
                   style={styles.backButton}
                   source={require('../images/weather/Android/4_Search/xxxhdpi/icon_back_black.png')}
@@ -53,7 +66,9 @@ const Favourite = ({navigation}) => {
             <View>
               <View style={styles.addedTextView}>
                 <Text style={styles.text2}>6 City added as favourite</Text>
-                <Text style={styles.text3}>Remove All</Text>
+                <TouchableOpacity onPress={() => change()}>
+                  <Text style={styles.text3}>Remove All</Text>
+                </TouchableOpacity>
               </View>
               <ScrollView
                 showsHorizontalScrollIndicator={false}
@@ -101,7 +116,7 @@ const styles = StyleSheet.create({
   headerText: {
     fontSize: 20,
     alignSelf: 'center',
-    color:'black'
+    color: 'black',
   },
   img: {
     height: '90%',

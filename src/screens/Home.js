@@ -44,16 +44,18 @@ const Home = ({navigation}) => {
               source={require('../images/weather/Android/2_Home/mdpi/logo.png')}
             />
           </View>
-          <Image
-            style={{width: 17.5, height: 17.5, resizeMode: 'contain'}}
-            source={require('../images/weather/Android/2_Home/mdpi/icon_search_white.png')}
-          />
+          <TouchableOpacity style={{width: 17.5, height: 17.5}} onPress={()=>navigation.navigate('SearchScreen')}>
+            <Image
+              style={{width: 17.5, height: 17.5, resizeMode: 'contain'}}
+              source={require('../images/weather/Android/2_Home/mdpi/icon_search_white.png')}
+            />
+          </TouchableOpacity>
         </View>
         <ScrollView showsHorizontalScrollIndicator={false}>
           <View style={styles.details}>
             <View style={styles.details1}>
               <Text style={styles.text1}>WED,28 NOV 2018 11.35 AM</Text>
-              <Text style={styles.text2}>UDUPI,KARNATAKA</Text>
+              <Text style={styles.text2}>Udupi,Karnataka</Text>
               <View
                 style={{
                   flexDirection: 'row',
@@ -65,7 +67,7 @@ const Home = ({navigation}) => {
                   style={{width: 20, height: 17.5}}
                   source={require('../images/weather/Android/2_Home/Group11/xxxhdpi/icon_favourite.png')}
                 />
-                <Text style={styles.text1}>Add to favotite</Text>
+                <Text style={{color: '#ffffff'}}>Add to favotite</Text>
               </View>
             </View>
             <View style={styles.details2}>
@@ -105,7 +107,7 @@ const Home = ({navigation}) => {
               style={{width: 13, height: 26}}
               source={require('../images/weather/Android/2_Home/Min-Max/xxxhdpi/icon_temperature_info.png')}
             />
-            <View style={{marginLeft:10}}>
+            <View style={{marginLeft: 10}}>
               <Text style={styles.textContent1}>Min-Max</Text>
               <Text style={styles.textContent2}>22°-34°</Text>
             </View>
@@ -115,7 +117,7 @@ const Home = ({navigation}) => {
               style={{width: 24, height: 23, marginRight: 10}}
               source={require('../images/weather/Android/2_Home/Precipitation/xxxhdpi/icon_precipitation_info.png')}
             />
-            <View style={{marginLeft:10}}>
+            <View style={{marginLeft: 10}}>
               <Text style={styles.textContent1}>Precipitation</Text>
               <Text style={styles.textContent2}>0%</Text>
             </View>
@@ -125,7 +127,7 @@ const Home = ({navigation}) => {
               style={{width: 15, height: 20}}
               source={require('../images/weather/Android/2_Home/Humidity/xxxhdpi/icon_humidity_info.png')}
             />
-            <View style={{marginLeft:10}}>
+            <View style={{marginLeft: 10}}>
               <Text style={styles.textContent1}>Humidity</Text>
               <Text style={styles.textContent2}>47%</Text>
             </View>
@@ -172,6 +174,7 @@ const styles = StyleSheet.create({
   },
   text1: {
     color: 'white',
+    opacity: 0.6,
   },
   text2: {
     color: 'white',
@@ -218,7 +221,7 @@ const styles = StyleSheet.create({
     marginLeft: 3,
   },
   bottomContent: {
-    flex:1,
+    flex: 1,
     flexDirection: 'row',
     width: 95,
     height: 41,
