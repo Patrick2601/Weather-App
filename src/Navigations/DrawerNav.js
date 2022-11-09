@@ -14,9 +14,9 @@ const DrawerNav = () => {
   return (
     <NavigationContainer>
       <Drawer.Navigator
-        initialRouteName="Favourite"
+        initialRouteName="Home"
         screenOptions={{headerShown: false}}>
-        <Drawer.Screen name="Stack" component={StackNav} />
+        <Drawer.Screen name="Home" component={StackNav} />
         <Drawer.Screen name="Favourite" component={Favourite} />
         <Drawer.Screen name="RecentSearch" component={RecentSearch} /> 
       </Drawer.Navigator>

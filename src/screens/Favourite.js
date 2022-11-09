@@ -8,14 +8,18 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
+  FlatList,
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
 import FavouriteList from '../components/FavouriteList';
+import Data from '../data/Weather';
 import {useState} from 'react';
-// Are you sure want to remove all the favourites?
+import {useSelector} from 'react-redux';
+
 const Favourite = ({navigation}) => {
   const [state, setState] = useState(false);
+  const favData = useSelector(state => state.favourite.value);
   const change = () =>
     Alert.alert('Are you sure ', 'want to remove all the favourites?', [
       {
@@ -25,11 +29,20 @@ const Favourite = ({navigation}) => {
       {text: 'YES', onPress: () => setState(!state)},
     ]);
 
+  const renderItem = ({item}) => (
+    <FavouriteList
+      city={item.city}
+      state={item.state}
+      temperature={item.temperature}
+      detail={item.detail}
+      weatherImage={item.weatherImage}
+    />
+  );
   return (
-    <View style={styles.main}>
-      <ImageBackground
-        style={{flex: 1}}
-        source={require('../images/weather/Android/1_Splash/xxxhdpi/background_android.png')}>
+    <ImageBackground
+      style={{flex: 1}}
+      source={require('../images/weather/Android/1_Splash/xxxhdpi/background_android.png')}>
+      <View style={styles.main}>
         <View style={styles.container}>
           <View style={styles.header}>
             <View
@@ -46,7 +59,6 @@ const Favourite = ({navigation}) => {
                   source={require('../images/weather/Android/4_Search/xxxhdpi/icon_back_black.png')}
                 />
               </TouchableOpacity>
-
               <Text style={styles.headerText}>Favourite</Text>
             </View>
             <Image
@@ -54,32 +66,33 @@ const Favourite = ({navigation}) => {
               source={require('../images/weather/Android/2_Home/mdpi/icon_search_white.png')}
             />
           </View>
-          {state ? (
-            <View style={styles.img}>
-              <Image
-                style={{height: 84, width: 160}}
-                source={require('../images/weather/Android/6_Favourite_Blank/Group38/Group3/xxxhdpi/icon_nothing.png')}
-              />
-              <Text style={styles.text1}>No Favourites added</Text>
-            </View>
-          ) : (
-            <View>
-              <View style={styles.addedTextView}>
-                <Text style={styles.text2}>6 City added as favourite</Text>
-                <TouchableOpacity onPress={() => change()}>
-                  <Text style={styles.text3}>Remove All</Text>
-                </TouchableOpacity>
-              </View>
-              <ScrollView
-                showsHorizontalScrollIndicator={false}
-                showsVerticalScrollIndicator={false}>
-                <FavouriteList />
-              </ScrollView>
-            </View>
-          )}
         </View>
-      </ImageBackground>
-    </View>
+        {state ? (
+          <View style={styles.img}>
+            <Image
+              style={{height: 84, width: 160}}
+              source={require('../images/weather/Android/6_Favourite_Blank/Group38/Group3/xxxhdpi/icon_nothing.png')}
+            />
+            <Text style={styles.text1}>No Favourites added</Text>
+          </View>
+        ) : (
+          <View style={{flex:1}}>
+            <View style={styles.addedTextView}>
+              <Text style={styles.text2}>6 City added as favourite</Text>
+              <TouchableOpacity onPress={() => change()}>
+                <Text style={styles.text3}>Remove All</Text>
+              </TouchableOpacity>
+            </View>
+            <FlatList
+              data={favData}
+              keyExtractor={item => item.id}
+              renderItem={renderItem}
+              showsVerticalScrollIndicator={false}
+            />
+          </View>
+        )}
+      </View>
+    </ImageBackground>
   );
 };
 
@@ -115,8 +128,10 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 20,
-    alignSelf: 'center',
+    textAlign: 'left',
     color: 'black',
+    width: '70%',
+    marginLeft: 40,
   },
   img: {
     height: '90%',
@@ -124,17 +139,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   text1: {
-    width: 166,
+    width: 170,
     height: 21,
     fontSize: 18,
     color: '#ffffff',
     marginTop: 30,
+    textAlign: 'center',
   },
   addedTextView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
     paddingHorizontal: 20,
+    bottom:20
   },
   text2: {color: '#ffffff'},
   text3: {color: '#ffffff'},
