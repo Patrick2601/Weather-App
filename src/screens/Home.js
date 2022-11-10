@@ -125,7 +125,7 @@ const Home = ({navigation}) => {
                   </TouchableOpacity>
                 )}
 
-                <Text style={{color: '#ffffff'}}>Add to favourite</Text>
+                <Text style={{color: '#ffffff',fontFamily:'Roboto-Medium'}}>Add to favourite</Text>
               </View>
             </View>
             <View style={styles.details2}>
@@ -269,20 +269,24 @@ const styles = StyleSheet.create({
   text1: {
     color: 'white',
     opacity: 0.6,
+   fontFamily:'Roboto-Regular'
   },
   text2: {
     color: 'white',
     fontSize: 18,
     fontWeight: '500',
     marginTop: 10,
+    fontFamily:'Roboto-Medium'
   },
   text4: {
     color: 'white',
     fontSize: 52,
+    fontFamily:'Roboto-Medium'
   },
   text5: {
     color: 'white',
     fontSize: 18,
+    fontFamily:'Roboto-Regular'
   },
   text7: {
     width: 7,

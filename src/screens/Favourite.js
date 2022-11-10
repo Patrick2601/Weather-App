@@ -141,6 +141,7 @@ const styles = StyleSheet.create({
     color: 'black',
     width: '70%',
     marginLeft: 40,
+    fontFamily: 'Roboto-Medium',
   },
   img: {
     height: '90%',
@@ -154,6 +155,7 @@ const styles = StyleSheet.create({
     color: '#ffffff',
     marginTop: 30,
     textAlign: 'center',
+    fontFamily: 'Roboto-Regular',
   },
   addedTextView: {
     flexDirection: 'row',
@@ -161,8 +163,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     bottom: 20,
   },
-  text2: {color: '#ffffff'},
-  text3: {color: '#ffffff'},
+  text2: {color: '#ffffff', fontFamily: 'Roboto-Regular',},
+  text3: {color: '#ffffff', fontFamily: 'Roboto-Medium',},
   text4: {color: '#FFE539', textAlign: 'left', fontWeight: '600'},
   text5: {color: '#ffffff', fontSize: 18},
   text6: {

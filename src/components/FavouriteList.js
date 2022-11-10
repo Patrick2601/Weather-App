@@ -8,7 +8,7 @@ const FavouriteList = ({
   temperature,
   weatherImage,
   onLongPress,
-  onPress
+  onPress,
 }) => {
   return (
     <TouchableOpacity onLongPress={onLongPress} onPress={onPress}>
@@ -41,60 +41,13 @@ const FavouriteList = ({
               style={{
                 width: 30,
                 height: 30,
-                bottom:4
+                bottom: 4,
               }}
               source={{uri: weatherImage}}
             />
           </View>
 
-          <Text style={styles.text5}> {temperature}</Text>
-
-          <Text style={styles.text6}>{detail}</Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-const SearchList = ({
-  city,
-  state,
-  detail,
-  temperature,
-  weatherImage,
-  onLongPress,
-}) => {
-  return (
-    <TouchableOpacity onLongPress={onLongPress}>
-      <View style={styles.weatherView}>
-        <View
-          style={{
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-          }}>
-          <Text style={styles.text4}>
-            {city},{state}
-          </Text>
-          <Image
-            style={{height: 18, width: 20, top: 14, resizeMode: 'contain'}}
-            source={require('../images/weather/Android/7_Favourite/Group3/xxxhdpi/icon_favourite_active.png')}
-          />
-        </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            alignItems: 'center',
-            //marginTop: 6,
-          }}>
-          <Image
-            style={{
-              width: 25,
-              height: 23,
-              resizeMode: 'contain',
-            }}
-            source={weatherImage}
-          />
-          <Text style={styles.text5}> {temperature}</Text>
+          <Text style={styles.text5}> {temperature} °C</Text>
 
           <Text style={styles.text6}>{detail}</Text>
         </View>
@@ -103,16 +56,28 @@ const SearchList = ({
   );
 };
 
-export {FavouriteList, SearchList};
+export {FavouriteList};
 
 const styles = StyleSheet.create({
   text2: {color: '#ffffff'},
   text3: {color: '#ffffff'},
-  text4: {color: '#FFE539', textAlign: 'left', fontWeight: '600'},
-  text5: {color: '#ffffff', fontSize: 18},
+  text4: {
+    color: '#FFE539',
+    textAlign: 'left',
+    fontWeight: '600',
+    fontFamily: 'Roboto-Medium',
+  },
+  text5: {
+    color: '#ffffff',
+    fontSize: 17,
+    fontFamily: 'Roboto-Medium',
+    alignSelf: 'center',
+  },
+
   text6: {
     color: '#ffffff',
     marginLeft: 10,
+    fontFamily: 'Roboto-Regular',
   },
   weatherView: {
     width: '90%',
