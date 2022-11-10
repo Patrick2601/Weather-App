@@ -12,14 +12,16 @@ import {
 } from 'react-native';
 import React from 'react';
 import Icon from 'react-native-vector-icons/Feather';
-import FavouriteList from '../components/FavouriteList';
-import Data from '../data/Weather';
+import {FavouriteList} from '../components/FavouriteList';
 import {useState} from 'react';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {deleteFav} from '../Redux/Reducers/Slice';
+import {getWeatherData} from '../Redux/Reducers/WeatherDataSlice';
 
 const Favourite = ({navigation}) => {
+  const dispatch = useDispatch();
   const [state, setState] = useState(false);
-  const favData = useSelector(state => state.favourite.value);
+  const data = useSelector(state => state.favourite.favData);
   const change = () =>
     Alert.alert('Are you sure ', 'want to remove all the favourites?', [
       {
@@ -36,6 +38,11 @@ const Favourite = ({navigation}) => {
       temperature={item.temperature}
       detail={item.detail}
       weatherImage={item.weatherImage}
+      onLongPress={() => dispatch(deleteFav(item.city))}
+      onPress={() => {
+        dispatch(getWeatherData(item.city));
+        navigation.navigate('HomeScreen');
+      }}
     />
   );
   return (
@@ -76,15 +83,17 @@ const Favourite = ({navigation}) => {
             <Text style={styles.text1}>No Favourites added</Text>
           </View>
         ) : (
-          <View style={{flex:1}}>
+          <View style={{flex: 1}}>
             <View style={styles.addedTextView}>
-              <Text style={styles.text2}>6 City added as favourite</Text>
+              <Text style={styles.text2}>
+                {data.length} City added as favourite
+              </Text>
               <TouchableOpacity onPress={() => change()}>
                 <Text style={styles.text3}>Remove All</Text>
               </TouchableOpacity>
             </View>
             <FlatList
-              data={favData}
+              data={data}
               keyExtractor={item => item.id}
               renderItem={renderItem}
               showsVerticalScrollIndicator={false}
@@ -150,7 +159,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: 20,
-    bottom:20
+    bottom: 20,
   },
   text2: {color: '#ffffff'},
   text3: {color: '#ffffff'},

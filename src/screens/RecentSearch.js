@@ -8,15 +8,19 @@ import {
   ScrollView,
   TouchableOpacity,
   Alert,
-  FlatList
+  FlatList,
 } from 'react-native';
 import React from 'react';
-import Icon from 'react-native-vector-icons/Feather';
-import FavouriteList from '../components/FavouriteList';
+import {FavouriteList} from '../components/FavouriteList';
 import {useState} from 'react';
-import Data from '../data/Weather';
+import {useDispatch, useSelector} from 'react-redux';
+import { deleteSearch } from '../Redux/Reducers/Slice';
+import { useEffect } from 'react';
+import { getWeatherData } from '../Redux/Reducers/WeatherDataSlice';
 
 const RescentSearch = ({navigation}) => {
+  const Data = useSelector(state => state.favourite.search);
+  const dispatch=useDispatch()
   const [state, setState] = useState(false);
   const change = () =>
     Alert.alert('Are you sure ', 'want to remove all the favourites?', [
@@ -33,8 +37,13 @@ const RescentSearch = ({navigation}) => {
       temperature={item.temperature}
       detail={item.detail}
       weatherImage={item.weatherImage}
+      onLongPress={() => dispatch(deleteSearch(item))}
+      onPress={()=>{dispatch(getWeatherData(item.city));navigation.navigate('HomeScreen')}}
     />
   );
+  useEffect(()=>{
+
+  },[Data])
 
   return (
     <View style={styles.main}>

@@ -1,7 +1,11 @@
 import {createSlice, createAsyncThunk} from '@reduxjs/toolkit';
+import uuid from 'react-native-uuid';
 
-export const getWeatherData =
-  createAsyncThunk('WeatherData/getWeatherdata', async () => {
+const initialState = [];
+
+export const getWeatherData = createAsyncThunk(
+  'WeatherData/getWeatherdata',
+  async query => {
     const options = {
       method: 'GET',
       headers: {
@@ -9,9 +13,8 @@ export const getWeatherData =
         'X-RapidAPI-Host': 'weatherapi-com.p.rapidapi.com',
       },
     };
-
     const response = await fetch(
-      'https://weatherapi-com.p.rapidapi.com/current.json?q=mumbai',
+      `https://weatherapi-com.p.rapidapi.com/current.json?q=${query}`,
       options,
     );
     try {
@@ -20,13 +23,13 @@ export const getWeatherData =
     } catch (err) {
       console.log(err);
     }
-  });
-
+  },
+);
 
 const WeatherDataSlice = createSlice({
   name: 'WeatherData',
   initialState: {
-    value: [],
+    value: initialState,
     status: false,
   },
   extraReducers: {

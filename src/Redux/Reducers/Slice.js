@@ -1,81 +1,72 @@
 import {createSlice} from '@reduxjs/toolkit';
-// import Facebook from '../../images/06/01/Bitmap.png';
-// import Twitter from '../../images/06/01copy4/BitmapCopy2.png';
-// import Youtube from '../../images/06/01copy3/Bitmap.png';
-// import Instagram from '../../images/06/01copy/Bitmap.png';
-// const Image_Icon = [Facebook, Youtube, Twitter, Instagram];
-import uuid from 'react-native-uuid';
 
-const initialState = [
-  {
-    id: uuid.v4(),
-    city: 'Udupi',
-    state: 'Karnataka',
-    // weatherImage: mostlySunny,
-    temperature: '31°C',
-    detail: 'Mostly Sunny',
-  },
-  {
-    id: uuid.v4(),
-    city: 'Bengaluru',
-    state: 'Karnataka',
-    // weatherImage: rain,
-    temperature: '29°C',
-    detail: 'Rain',
-  },
-  {
-    id: uuid.v4(),
-    city: 'Mumbai',
-    state: 'Maharashtra',
-    // weatherImage: mostlyCloudy,
-    temperature: '32°C',
-    detail: 'Mostly Cloudy',
-  },
-  {
-    id: uuid.v4(),
-    city: 'Kolkatta',
-    state: 'West-Bengal',
-    //weatherImage: partlyCloudy,
-    temperature: '30°C',
-    detail: 'Partly Cloudy',
-  },
-  {
-    id: uuid.v4(),
-    city: 'Panaji',
-    state: 'Goa',
-    //weatherImage: thunderstorm,
-    temperature: '31°C',
-    detail: 'Thunderstorm',
-  },
-  {
-    id: uuid.v4(),
-    city: 'Newyork',
-    state: 'United States ',
-    // weatherImage: clearNight,
-    temperature: '24°C',
-    detail: 'Clear Night',
-  },
-];
+const initialState = [];
 
 export const Slice = createSlice({
-  name: 'favourite',
+  name: 'slice',
   initialState: {
     value: initialState,
-    preState: initialState,
+    favData: initialState,
+    allData: initialState,
+    search: [],
   },
   reducers: {
     addfavourite: (state, action) => {
-      state.value.push(action.payload);
-      state.preState.push(action.payload);
+      const city = state.allData.map(value => value.city);
+      if (city.includes(action.payload.city)) {
+        alert('City Already Exist');
+      } else {
+        state.value.push(action.payload);
+        state.favData.push(action.payload);
+        state.allData.push(action.payload);
+      }
     },
-    filter: (state, action) => {
-      state.value = state.preState.filter(item =>
+    addSearchCity: (state, action) => {
+      state.search.push(action.payload);
+      state.allData.push(action.payload);
+    },
+    getSearchData: (state, action) => {
+      state.search = state.allData.filter(item => item.search === true);
+    },
+
+    filterSearch: (state, action) => {
+      state.value = state.favData.filter(item =>
         item.city.toLowerCase().includes(action.payload.toLowerCase()),
       );
+    },
+    // filter: (state, action) => {
+    //   state.value = state.favData.filter(item =>
+    //     item.city.toLowerCase().includes(action.payload.toLowerCase()),
+    //   );
+    // },
+    deleteFav: (state, action) => {
+      state.favData = state.favData.filter(
+        item => item.city !== action.payload,
+      );
+      // state.value = state.value.filter(item => item.id !== action.payload.id);
+      // state.allData = state.allData.filter(
+      //   item => item.id !== action.payload.id,
+      // );
+      
+    },
+    deleteSearch: (state, action) => {
+      state.search = state.value.filter(item => item.id !== action.payload.id);
+      // state.value = state.value.filter(item => item.id !== action.payload.id);
+      // state.allData = state.allData.filter(
+      //   item => item.id !== action.payload.id,
+      // );
     },
   },
 });
 
-export const {addfavourite, filter} = Slice.actions;
+export const {
+  addfavourite,
+  filter,
+  deleteFav,
+  filterSearch,
+  addSearchCity,
+  getSearchData,
+  deleteSearch
+} = Slice.actions;
 
 export default Slice.reducer;

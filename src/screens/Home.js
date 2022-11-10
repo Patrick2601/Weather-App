@@ -15,7 +15,8 @@ import {useDispatch, useSelector} from 'react-redux';
 import {getWeatherData} from '../Redux/Reducers/WeatherDataSlice';
 import {useEffect} from 'react';
 import {useState} from 'react';
-import {addfavourite} from '../Redux/Reducers/Slice';
+import {addfavourite, deleteFav} from '../Redux/Reducers/Slice';
+
 import uuid from 'react-native-uuid';
 import moment from 'moment';
 
@@ -40,17 +41,21 @@ const Home = ({navigation}) => {
       id: uuid.v4(),
       city: weatherData.location.name,
       state: weatherData.location.region,
-      //weatherImage: mostlySunny,
+      weatherImage: `https:${weatherData.current.condition.icon}`,
       temperature: weatherData.current.temp_c,
       detail: weatherData.current.condition.text,
     };
-    console.log(obj);
     dispatch(addfavourite(obj));
   };
+  const deleteFavourite = () => {
+    setFavourite(!favourite);
+
+    console.log('dele');
+    dispatch(deleteFav(weatherData.location.name));
+  };
   useEffect(() => {
-    dispatch(getWeatherData());
-    currentDateTime()
-  }, []);
+    currentDateTime();
+  }, [useDispatch, useSelector]);
   return (
     <ImageBackground
       style={{flex: 1}}
@@ -91,12 +96,12 @@ const Home = ({navigation}) => {
             />
           </TouchableOpacity>
         </View>
-        <ScrollView showsHorizontalScrollIndicator={false} bounces={false}>
+        <ScrollView showsVerticalScrollIndicator={false} bounces={false}>
           <View style={styles.details}>
             <View style={styles.details1}>
               <Text style={styles.text1}>{date}</Text>
               <Text style={styles.text2}>
-                {weatherData.location.name}, {weatherData.location.region}
+                {weatherData.location?.name}, {weatherData.location?.region}
               </Text>
               <View
                 style={{
@@ -105,7 +110,7 @@ const Home = ({navigation}) => {
                   width: '35%',
                   marginTop: 20,
                 }}>
-                {favourite ? (
+                {!favourite ? (
                   <TouchableOpacity onPress={() => addToFavourite()}>
                     <Image
                       style={{width: 20, height: 17.5, resizeMode: 'contain'}}
@@ -113,7 +118,7 @@ const Home = ({navigation}) => {
                     />
                   </TouchableOpacity>
                 ) : (
-                  <TouchableOpacity onPress={() => addToFavourite()}>
+                  <TouchableOpacity onPress={() => deleteFavourite()}>
                     <Image
                       style={{width: 20, height: 17.5, resizeMode: 'contain'}}
                       source={require('../images/weather/Android/7_Favourite/Group3/xxxhdpi/icon_favourite_active.png')}
@@ -126,12 +131,18 @@ const Home = ({navigation}) => {
             </View>
             <View style={styles.details2}>
               <Image
-                style={{width: 84, height: 87}}
-                source={require('../images/weather/Android/sun.png')}
+                style={{width: 140, height: 100, resizeMode: 'contain'}}
+                source={
+                  weatherData.current?.condition.icon
+                    ? {uri: `https:${weatherData.current?.condition.icon}`}
+                    : require('../images/weather/Android/sun.png')
+                }
               />
               {click ? (
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={styles.text4}>{weatherData.current.temp_c}</Text>
+                  <Text style={styles.text4}>
+                    {weatherData.current?.temp_c}
+                  </Text>
                   <View style={styles.bodyviewbox}>
                     <View style={styles.bodyviewbox1}>
                       <Text style={styles.text8}>°C</Text>
@@ -145,7 +156,9 @@ const Home = ({navigation}) => {
                 </View>
               ) : (
                 <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <Text style={styles.text4}>{weatherData.current.temp_f}</Text>
+                  <Text style={styles.text4}>
+                    {weatherData.current?.temp_f}
+                  </Text>
                   <View style={styles.bodyviewbox}>
                     <View style={styles.bodyviewbox4}>
                       <TouchableOpacity onPress={() => setClick(true)}>
@@ -161,53 +174,56 @@ const Home = ({navigation}) => {
               )}
 
               <Text style={styles.text5}>
-                {weatherData.current.condition.text}
+                {weatherData.current?.condition.text}
               </Text>
             </View>
           </View>
           <ScrollView
             style={{
-              //  height: Platform.OS === 'ios' ? 280 : 120,
-              borderWidth: 0.3,
-              borderTopColor: 'white',
-              borderBottomColor: 'transparent',
-              borderLeftColor: 'transparent',
-              borderRightColor: 'transparent',
-              // top: Platform.OS === 'ios' ? 0 : 40,
               marginTop: 210,
+              backgroundColor: 'rgba(255,255,255,0.1)',
             }}
             horizontal
             showsHorizontalScrollIndicator={false}>
-            <View style={styles.bottomContent}>
-              <Image
-                style={{width: 13, height: 26}}
-                source={require('../images/weather/Android/2_Home/Min-Max/xxxhdpi/icon_temperature_info.png')}
-              />
-              <View style={{marginLeft: 10}}>
-                <Text style={styles.textContent1}>Min-Max</Text>
-                <Text style={styles.textContent2}>22°-34°</Text>
+            <View
+              style={{
+                justifyContent: 'center',
+                flexDirection: 'row',
+                width: '100%',
+              }}>
+              <View style={styles.bottomContent}>
+                <Image
+                  style={{width: 13, height: 26}}
+                  source={require('../images/weather/Android/2_Home/Min-Max/xxxhdpi/icon_temperature_info.png')}
+                />
+                <View style={{marginLeft: 10}}>
+                  <Text style={styles.textContent1}>Min-Max</Text>
+                  <Text style={styles.textContent2}>22°-34°</Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.bottomContent}>
-              <Image
-                style={{width: 24, height: 23, marginRight: 1}}
-                source={require('../images/weather/Android/2_Home/Precipitation/xxxhdpi/icon_precipitation_info.png')}
-              />
-              <View style={{marginLeft: 10}}>
-                <Text style={styles.textContent1}>Precipitation</Text>
-                <Text style={styles.textContent2}>0%</Text>
+              <View style={styles.bottomContent}>
+                <Image
+                  style={{width: 24, height: 23, marginRight: 1}}
+                  source={require('../images/weather/Android/2_Home/Precipitation/xxxhdpi/icon_precipitation_info.png')}
+                />
+                <View style={{marginLeft: 10}}>
+                  <Text style={styles.textContent1}>Precipitation</Text>
+                  <Text style={styles.textContent2}>
+                    {weatherData.current?.precip_in}%
+                  </Text>
+                </View>
               </View>
-            </View>
-            <View style={styles.bottomContent}>
-              <Image
-                style={{width: 15, height: 20}}
-                source={require('../images/weather/Android/2_Home/Humidity/xxxhdpi/icon_humidity_info.png')}
-              />
-              <View style={{marginLeft: 10}}>
-                <Text style={styles.textContent1}>Humidity</Text>
-                <Text style={styles.textContent2}>
-                  {weatherData.current.humidity}%
-                </Text>
+              <View style={styles.bottomContent}>
+                <Image
+                  style={{width: 15, height: 20}}
+                  source={require('../images/weather/Android/2_Home/Humidity/xxxhdpi/icon_humidity_info.png')}
+                />
+                <View style={{marginLeft: 10}}>
+                  <Text style={styles.textContent1}>Humidity</Text>
+                  <Text style={styles.textContent2}>
+                    {weatherData.current?.humidity}%
+                  </Text>
+                </View>
               </View>
             </View>
           </ScrollView>
@@ -319,9 +335,9 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     height: Platform.OS === 'ios' ? 80 : 120,
     height: 80,
-    paddingLeft: 28,
-    paddingTop: 25,
-    justifyContent: 'space-between',
+    paddingLeft: 26,
+    paddingTop: 20,
+    // paddingHorizontal:20
   },
   textContent1: {color: 'white'},
   textContent2: {color: 'white', fontSize: 18},
