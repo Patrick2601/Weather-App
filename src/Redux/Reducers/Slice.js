@@ -50,7 +50,7 @@ export const Slice = createSlice({
       
     },
     deleteSearch: (state, action) => {
-      state.search = state.value.filter(item => item.id !== action.payload.id);
+      state.search = state.search.filter(item => item.id !== action.payload.id);
       // state.value = state.value.filter(item => item.id !== action.payload.id);
       // state.allData = state.allData.filter(
       //   item => item.id !== action.payload.id,
