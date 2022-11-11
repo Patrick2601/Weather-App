@@ -49,7 +49,6 @@ const Home = ({navigation}) => {
   };
   const deleteFavourite = () => {
     setFavourite(!favourite);
-    console.log('dele');
     dispatch(deleteFav(weatherData.location.name));
   };
   useEffect(() => {

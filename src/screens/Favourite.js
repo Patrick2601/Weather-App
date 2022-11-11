@@ -83,7 +83,7 @@ const Favourite = ({navigation}) => {
             <Text style={styles.text1}>No Favourites added</Text>
           </View>
         ) : (
-          <View style={{flex: 1}}>
+          <View >
             <View style={styles.addedTextView}>
               <Text style={styles.text2}>
                 {data.length} City added as favourite

@@ -18,7 +18,11 @@ const DrawerNav = () => {
         screenOptions={{headerShown: false}}>
         <Drawer.Screen name="Home" component={StackNav} />
         <Drawer.Screen name="Favourite" component={Favourite} />
-        <Drawer.Screen name="RecentSearch" component={RecentSearch} /> 
+        <Drawer.Screen
+          name="RecentSearch"
+          component={RecentSearch}
+          options={{title: 'Recent Search'}}
+        />
       </Drawer.Navigator>
     </NavigationContainer>
   );

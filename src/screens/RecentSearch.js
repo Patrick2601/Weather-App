@@ -14,13 +14,15 @@ import React from 'react';
 import {FavouriteList} from '../components/FavouriteList';
 import {useState} from 'react';
 import {useDispatch, useSelector} from 'react-redux';
-import { deleteSearch } from '../Redux/Reducers/Slice';
-import { useEffect } from 'react';
-import { getWeatherData } from '../Redux/Reducers/WeatherDataSlice';
+import {deleteSearch} from '../Redux/Reducers/Slice';
+import {useEffect} from 'react';
+import {getWeatherData} from '../Redux/Reducers/WeatherDataSlice';
+import {deleteAllSearch} from '../Redux/Reducers/Slice';
+import {getSearchData} from '../Redux/Reducers/Slice';
 
 const RescentSearch = ({navigation}) => {
   const Data = useSelector(state => state.favourite.search);
-  const dispatch=useDispatch()
+  const dispatch = useDispatch();
   const [state, setState] = useState(false);
   const change = () =>
     Alert.alert('Are you sure ', 'want to remove all the favourites?', [
@@ -28,7 +30,13 @@ const RescentSearch = ({navigation}) => {
         text: 'NO',
         onPress: () => console.log('Cancel Pressed'),
       },
-      {text: 'YES', onPress: () => setState(!state)},
+      {
+        text: 'YES',
+        onPress: () => {
+          setState(!state);
+          dispatch(deleteAllSearch());
+        },
+      },
     ]);
   const renderItem = ({item}) => (
     <FavouriteList
@@ -38,12 +46,15 @@ const RescentSearch = ({navigation}) => {
       detail={item.detail}
       weatherImage={item.weatherImage}
       onLongPress={() => dispatch(deleteSearch(item))}
-      onPress={()=>{dispatch(getWeatherData(item.city));navigation.navigate('HomeScreen')}}
+      onPress={() => {
+        dispatch(getWeatherData(item.city));
+        navigation.navigate('HomeScreen');
+      }}
     />
   );
-  useEffect(()=>{
-
-  },[Data])
+  useEffect(() => {
+    getSearchData();
+  }, [Data]);
 
   return (
     <View style={styles.main}>
@@ -82,7 +93,7 @@ const RescentSearch = ({navigation}) => {
               <Text style={styles.text1}>No Recent Search</Text>
             </View>
           ) : (
-            <View>
+            <View >
               <View style={styles.addedTextView}>
                 <Text style={styles.text2}>You recently searched for</Text>
                 <TouchableOpacity onPress={() => change()}>
@@ -158,11 +169,12 @@ const styles = StyleSheet.create({
   addedTextView: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginTop: 10,
     paddingHorizontal: 20,
+    alignItems: 'center',
+    height: 40,
   },
-  text2: {color: '#ffffff', fontFamily: 'Roboto-Regular',},
-  text3: {color: '#ffffff', fontFamily: 'Roboto-Medium',},
+  text2: {color: '#ffffff', fontFamily: 'Roboto-Regular'},
+  text3: {color: '#ffffff', fontFamily: 'Roboto-Medium'},
   text4: {color: '#FFE539', textAlign: 'left', fontWeight: '600'},
   text5: {color: '#ffffff', fontSize: 18},
   text6: {

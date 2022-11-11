@@ -82,7 +82,7 @@ const styles = StyleSheet.create({
   weatherView: {
     width: '90%',
     height: 80,
-    marginTop: 20,
+    marginTop: 3,
     marginLeft: 22,
     backgroundColor: 'rgba(255,255,255,0.1)',
     padding: 15,
